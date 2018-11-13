@@ -69,7 +69,9 @@ namespace ColorGenerator
             {10,new Color(22,198,12)},
             {11,new Color(97,214,214)},
             {12,new Color(231,73,86)},
-            {13,new Color(180,0,158)}
+            {13,new Color(180,0,158)},
+            {14,new Color(249,241,165)},
+            {15,new Color(242,242,242)},
         };
 
         static readonly Dictionary<char, float> chars = new Dictionary<char, float>()
