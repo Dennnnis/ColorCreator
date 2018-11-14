@@ -56,35 +56,29 @@ namespace ColorGenerator
 
         static readonly Dictionary<int, Color> RGBColors = new Dictionary<int, Color>()
         {
-            {0, new Color(12,12,12)},
-            {1, new Color(0,55,218)},
-            {2, new Color(19,161,14)},
-            {3, new Color(58,150,221)},
-            {4, new Color(197,15,31)},
-            {5, new Color(105,15,110)},
-            {6, new Color(193,156,0)},
-            {7, new Color(204,204,204)},
-            {8, new Color(118,118,118)},
-            {9, new Color(59,120,255)},
-            {10,new Color(22,198,12)},
-            {11,new Color(97,214,214)},
-            {12,new Color(231,73,86)},
-            {13,new Color(180,0,158)},
-            {14,new Color(249,241,165)},
-            {15,new Color(242,242,242)},
+            {0, new Color(12,12,12)},   {1, new Color(0,55,218)},
+            {2, new Color(19,161,14)},  {3, new Color(58,150,221)},
+            {4, new Color(197,15,31)},  {5, new Color(105,15,110)},
+            {6, new Color(193,156,0)},  {7, new Color(204,204,204)},
+            {8, new Color(118,118,118)},{9, new Color(59,120,255)},
+            {10,new Color(22,198,12)},  {11,new Color(97,214,214)},
+            {12,new Color(231,73,86)},  {13,new Color(180,0,158)},
+            {14,new Color(249,241,165)},{15,new Color(242,242,242)},
         };
 
-        static readonly Dictionary<char, float> chars = new Dictionary<char, float>()
-        {
-            {'░',0.875f},
-            {'▒',0.750f},
-            {'▓',0.250f},
-        };
+        static Dictionary<char, float> chars;
+
+        static string sampleChars = "░▒▓";
+        const string fontName = "raster fonts";
+        const int scanQuality = 500; //Aka the size of the font
 
         static List<Tuple<CharCode, Color>> data = new List<Tuple<CharCode, Color>>();
 
         static void Main(string[] args)
-        {      
+        {
+            //Collect chars
+            chars = CharacterBrightness.GetData(sampleChars.ToArray(), new System.Drawing.Font(fontName, scanQuality));
+
             //Add same colors
             foreach (var c in RGBColors)
             {
@@ -115,6 +109,8 @@ namespace ColorGenerator
             //Sort
             data = data.OrderBy(a => Color.GetHue(a.Item2)).ToList();
 
+            Console.Clear();
+
             //Print
             int count = 0;
             foreach(var d in data)
@@ -125,11 +121,13 @@ namespace ColorGenerator
 
                 Console.Write($"{new string(d.Item1.c,10)}");
                 Console.ResetColor();
-                Console.Write($"  Count: {Fix($"{count}",4,' ')}  ({Fix($"{d.Item2.r}",3,'0')},{Fix($"{d.Item2.g}", 3, '0')},{Fix($"{d.Item2.b}", 3, '0')})");
+                Console.Write($"  Count: {Fix($"{count}",4,'0')} RGB: ({Fix($"{d.Item2.r}",3,'0')},{Fix($"{d.Item2.g}", 3, '0')},{Fix($"{d.Item2.b}", 3, '0')})");
                 Console.Write($" Code: {Fix($"{d.Item1.front}",2,'0')}:{Fix($"{d.Item1.back}", 2, '0')} Char: {(byte)d.Item1.c}");
-                
+
                 Console.WriteLine();
             }
+
+            Console.WriteLine("Finsihed.");
             Console.ReadLine();
         }
 
